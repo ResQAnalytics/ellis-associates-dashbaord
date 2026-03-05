@@ -142,247 +142,314 @@ export default function EllisAssociatesDashboard() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Animated Water Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-700 to-teal-600">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-teal-400 animate-wave"></div>
-          <div className="absolute inset-0 bg-gradient-to-l from-teal-400 to-blue-400 animate-wave-slow"></div>
-        </div>
-      </div>
-
-      {/* Content Container */}
-      <div className="relative z-10 min-h-screen">
-        <AnimatePresence mode="wait">
-          {currentView === 'landing' && (
-            <motion.div
-              key="landing"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col items-center justify-center min-h-screen px-4"
-            >
-              {/* Logo Section */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="text-center mb-8"
-              >
-                <div className="bg-white rounded-2xl p-8 shadow-2xl mb-6 inline-block">
-                  <img
-                    src="https://i.imgur.com/xg3dEpv.png"
-                    alt="Ellis & Associates Logo"
-                    className="w-auto h-24 md:h-32 max-w-full"
-                  />
-                </div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  Ellis & Associates
-                </h1>
-                <p className="text-xl md:text-2xl text-blue-100 mb-2">
-                  Business Intelligence Dashboard
-                </p>
-                <a 
-                  href="https://eaisafety.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-lg text-blue-200 hover:text-white transition-colors underline"
-                >
-                  eaisafety.com
-                </a>
-              </motion.div>
-
-              {/* Disclaimer Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="max-w-2xl mx-auto mb-8"
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20">
-                  <CardContent className="pt-6">
-                    <p className="text-white text-center leading-relaxed">
-                      This dashboard contains confidential business intelligence data. 
-                      By accessing this system, you acknowledge that all information is 
-                      proprietary and subject to applicable data protection regulations. 
-                      Unauthorized access, use, or distribution is strictly prohibited.
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Continue Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.6 }}
-              >
-                <Button
-                  onClick={handleContinue}
-                  variant="primary"
-                  size="lg"
-                  className="px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
-                >
-                  Access Dashboard
-                </Button>
-              </motion.div>
-            </motion.div>
-          )}
-
-          {currentView === 'auth' && (
-            <motion.div
-              key="auth"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center justify-center min-h-screen px-4"
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1, duration: 0.4 }}
-                className="w-full max-w-md"
-              >
-                <Card className="bg-white/95 backdrop-blur-sm shadow-2xl">
-                  <CardHeader className="text-center">
-                    <div className="mx-auto bg-blue-900 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
-                      <Lock className="w-8 h-8 text-white" />
-                    </div>
-                    <CardTitle className="text-2xl text-blue-900">
-                      Secure Access
-                    </CardTitle>
-                    <CardDescription>
-                      Enter your password to access the dashboard
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handlePasswordSubmit} className="space-y-4">
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          placeholder="Enter password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="pr-10"
-                          disabled={isLoading || attemptCount >= MAX_ATTEMPTS}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                        >
-                          {showPassword ? (
-                            <EyeOff className="w-5 h-5" />
-                          ) : (
-                            <Eye className="w-5 h-5" />
-                          )}
-                        </button>
-                      </div>
-
-                      {error && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-red-600 text-sm text-center"
-                        >
-                          {error}
-                        </motion.p>
-                      )}
-
-                      {attemptCount > 0 && attemptCount < MAX_ATTEMPTS && (
-                        <p className="text-amber-600 text-sm text-center">
-                          Attempts remaining: {MAX_ATTEMPTS - attemptCount}
-                        </p>
-                      )}
-
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={isLoading || !password || attemptCount >= MAX_ATTEMPTS}
-                      >
-                        {isLoading ? 'Verifying...' : 'Access Dashboard'}
-                      </Button>
-
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="w-full"
-                        onClick={() => setCurrentView('landing')}
-                      >
-                        Back to Home
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-          )}
-
-          {currentView === 'dashboard' && (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="min-h-screen"
-            >
-              {/* Logout Button */}
-              <div className="fixed top-4 right-4 z-50">
-                <Button
-                  onClick={handleLogout}
-                  variant="secondary"
-                  className="shadow-lg"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
-
-              {/* PowerBI Dashboard Iframe */}
-              <div className="w-full h-screen">
-                <iframe
-                  src={POWERBI_URL}
-                  className="w-full h-full border-0"
-                  title="PowerBI Dashboard"
-                  allowFullScreen
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <style jsx>{`
-        @keyframes wave {
-          0%, 100% {
-            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+    <>
+      <style jsx global>{`
+        @keyframes gradient-shift {
+          0% {
+            background-position: 0% 50%;
           }
           50% {
-            transform: translateX(-30%) translateY(-60%) rotate(180deg);
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
           }
         }
 
-        @keyframes wave-slow {
+        @keyframes wave-float {
           0%, 100% {
-            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-20px) translateX(10px);
           }
           50% {
-            transform: translateX(-70%) translateY(-40%) rotate(-180deg);
+            transform: translateY(-10px) translateX(-10px);
+          }
+          75% {
+            transform: translateY(-30px) translateX(5px);
           }
         }
 
-        .animate-wave {
-          animation: wave 20s ease-in-out infinite;
+        @keyframes wave-float-reverse {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-15px) translateX(-8px);
+          }
+          50% {
+            transform: translateY(-25px) translateX(8px);
+          }
+          75% {
+            transform: translateY(-5px) translateX(-5px);
+          }
         }
 
-        .animate-wave-slow {
-          animation: wave-slow 25s ease-in-out infinite;
+        .animated-gradient {
+          background: linear-gradient(
+            -45deg,
+            #1e3a8a,
+            #1e40af,
+            #3b82f6,
+            #0891b2,
+            #14b8a6,
+            #2563eb
+          );
+          background-size: 400% 400%;
+          animation: gradient-shift 15s ease infinite;
+        }
+
+        .wave-layer {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          opacity: 0.3;
+        }
+
+        .wave-layer-1 {
+          background: radial-gradient(
+            ellipse at center,
+            rgba(59, 130, 246, 0.4) 0%,
+            transparent 70%
+          );
+          animation: wave-float 8s ease-in-out infinite;
+        }
+
+        .wave-layer-2 {
+          background: radial-gradient(
+            ellipse at center,
+            rgba(20, 184, 166, 0.4) 0%,
+            transparent 70%
+          );
+          animation: wave-float-reverse 10s ease-in-out infinite;
+          animation-delay: -2s;
+        }
+
+        .wave-layer-3 {
+          background: radial-gradient(
+            ellipse at center,
+            rgba(96, 165, 250, 0.3) 0%,
+            transparent 70%
+          );
+          animation: wave-float 12s ease-in-out infinite;
+          animation-delay: -4s;
         }
       `}</style>
-    </div>
+
+      <div className="relative min-h-screen overflow-hidden">
+        {/* Animated Water Background */}
+        <div className="absolute inset-0 animated-gradient">
+          <div className="wave-layer wave-layer-1"></div>
+          <div className="wave-layer wave-layer-2"></div>
+          <div className="wave-layer wave-layer-3"></div>
+        </div>
+
+        {/* Content Container */}
+        <div className="relative z-10 min-h-screen">
+          <AnimatePresence mode="wait">
+            {currentView === 'landing' && (
+              <motion.div
+                key="landing"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col items-center justify-center min-h-screen px-4"
+              >
+                {/* Logo Section */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="text-center mb-8"
+                >
+                  <div className="bg-white rounded-2xl p-8 shadow-2xl mb-6 inline-block">
+                    <img
+                      src="https://i.imgur.com/xg3dEpv.png"
+                      alt="Ellis & Associates Logo"
+                      className="w-auto h-24 md:h-32 max-w-full"
+                    />
+                  </div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                    Ellis & Associates
+                  </h1>
+                  <p className="text-xl md:text-2xl text-blue-100 mb-2">
+                    Business Intelligence Dashboard
+                  </p>
+                  <a 
+                    href="https://eaisafety.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-lg text-blue-200 hover:text-white transition-colors underline"
+                  >
+                    eaisafety.com
+                  </a>
+                </motion.div>
+
+                {/* Disclaimer Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="max-w-2xl mx-auto mb-8"
+                >
+                  <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                    <CardContent className="pt-6">
+                      <p className="text-white text-center leading-relaxed">
+                        This dashboard contains confidential business intelligence data. 
+                        By accessing this system, you acknowledge that all information is 
+                        proprietary and subject to applicable data protection regulations. 
+                        Unauthorized access, use, or distribution is strictly prohibited.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Continue Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                >
+                  <Button
+                    onClick={handleContinue}
+                    variant="primary"
+                    size="lg"
+                    className="px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+                  >
+                    Access Dashboard
+                  </Button>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {currentView === 'auth' && (
+              <motion.div
+                key="auth"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center justify-center min-h-screen px-4"
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                  className="w-full max-w-md"
+                >
+                  <Card className="bg-white/95 backdrop-blur-sm shadow-2xl">
+                    <CardHeader className="text-center">
+                      <div className="mx-auto bg-blue-900 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                        <Lock className="w-8 h-8 text-white" />
+                      </div>
+                      <CardTitle className="text-2xl text-blue-900">
+                        Secure Access
+                      </CardTitle>
+                      <CardDescription>
+                        Enter your password to access the dashboard
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="pr-10"
+                            disabled={isLoading || attemptCount >= MAX_ATTEMPTS}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-5 h-5" />
+                            ) : (
+                              <Eye className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+
+                        {error && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-600 text-sm text-center"
+                          >
+                            {error}
+                          </motion.p>
+                        )}
+
+                        {attemptCount > 0 && attemptCount < MAX_ATTEMPTS && (
+                          <p className="text-amber-600 text-sm text-center">
+                            Attempts remaining: {MAX_ATTEMPTS - attemptCount}
+                          </p>
+                        )}
+
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading || !password || attemptCount >= MAX_ATTEMPTS}
+                        >
+                          {isLoading ? 'Verifying...' : 'Access Dashboard'}
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="w-full"
+                          onClick={() => setCurrentView('landing')}
+                        >
+                          Back to Home
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {currentView === 'dashboard' && (
+              <motion.div
+                key="dashboard"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="min-h-screen"
+              >
+                {/* Logout Button */}
+                <div className="fixed top-4 right-4 z-50">
+                  <Button
+                    onClick={handleLogout}
+                    variant="secondary"
+                    className="shadow-lg"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                </div>
+
+                {/* PowerBI Dashboard Iframe */}
+                <div className="w-full h-screen">
+                  <iframe
+                    src={POWERBI_URL}
+                    className="w-full h-full border-0"
+                    title="PowerBI Dashboard"
+                    allowFullScreen
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </>
   )
 }
 

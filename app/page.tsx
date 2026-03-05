@@ -1,12 +1,93 @@
+// app/page.tsx
 "use client"
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Eye, EyeOff, LogOut, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import Image from 'next/image'
+import { Lock, Eye, EyeOff, LogOut } from 'lucide-react'
+
+// Simple Button Component
+const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    variant?: 'default' | 'secondary' | 'ghost'
+    size?: 'default' | 'lg'
+  }
+>(({ className = '', variant = 'default', size = 'default', ...props }, ref) => {
+  const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50'
+  const variants = {
+    default: 'bg-blue-900 text-white hover:bg-blue-800',
+    secondary: 'bg-white text-blue-900 hover:bg-gray-100',
+    ghost: 'hover:bg-gray-100'
+  }
+  const sizes = {
+    default: 'h-10 px-4 py-2 text-sm',
+    lg: 'h-11 px-8 text-lg'
+  }
+  
+  return (
+    <button
+      ref={ref}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      {...props}
+    />
+  )
+})
+Button.displayName = 'Button'
+
+// Simple Input Component
+const Input = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(({ className = '', ...props }, ref) => {
+  return (
+    <input
+      ref={ref}
+      className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      {...props}
+    />
+  )
+})
+Input.displayName = 'Input'
+
+// Simple Card Components
+const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div
+      ref={ref}
+      className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}
+      {...props}
+    />
+  )
+)
+Card.displayName = 'Card'
+
+const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div ref={ref} className={`flex flex-col space-y-1.5 p-6 ${className}`} {...props} />
+  )
+)
+CardHeader.displayName = 'CardHeader'
+
+const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className = '', ...props }, ref) => (
+    <h3 ref={ref} className={`text-2xl font-semibold leading-none tracking-tight ${className}`} {...props} />
+  )
+)
+CardTitle.displayName = 'CardTitle'
+
+const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className = '', ...props }, ref) => (
+    <p ref={ref} className={`text-sm text-gray-600 ${className}`} {...props} />
+  )
+)
+CardDescription.displayName = 'CardDescription'
+
+const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div ref={ref} className={`p-6 pt-0 ${className}`} {...props} />
+  )
+)
+CardContent.displayName = 'CardContent'
 
 export default function EllisAssociatesDashboard() {
   const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'dashboard'>('landing')
@@ -61,6 +142,7 @@ export default function EllisAssociatesDashboard() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Water Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-700 to-teal-600">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-teal-400 animate-wave"></div>
@@ -68,6 +150,7 @@ export default function EllisAssociatesDashboard() {
         </div>
       </div>
 
+      {/* Content Container */}
       <div className="relative z-10 min-h-screen">
         <AnimatePresence mode="wait">
           {currentView === 'landing' && (
@@ -79,6 +162,7 @@ export default function EllisAssociatesDashboard() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center justify-center min-h-screen px-4"
             >
+              {/* Logo Section */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -86,32 +170,29 @@ export default function EllisAssociatesDashboard() {
                 className="text-center mb-8"
               >
                 <div className="bg-white rounded-2xl p-8 shadow-2xl mb-6 inline-block">
-                  <Image
-                    src="https://eaisafety.com/wp-content/uploads/2022/03/cropped-EAI-Safety-Logo-1.png"
-                    alt="Ellis and Associates Safety Logo"
-                    width={300}
-                    height={120}
-                    className="w-auto h-24 md:h-32"
-                    priority
+                  <img
+                    src="https://i.imgur.com/xg3dEpv.png"
+                    alt="Ellis & Associates Logo"
+                    className="w-auto h-24 md:h-32 max-w-full"
                   />
                 </div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  Ellis & Associates Safety Consultants
+                  Ellis & Associates
                 </h1>
-                <p className="text-xl md:text-2xl text-blue-100 mb-4">
+                <p className="text-xl md:text-2xl text-blue-100 mb-2">
                   Business Intelligence Dashboard
                 </p>
-                <a
-                  href="https://eaisafety.com"
-                  target="_blank"
+                <a 
+                  href="https://eaisafety.com" 
+                  target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-white hover:text-blue-200 transition-colors text-lg"
+                  className="text-lg text-blue-200 hover:text-white transition-colors underline"
                 >
-                  Visit eaisafety.com
-                  <ExternalLink className="w-5 h-5" />
+                  eaisafety.com
                 </a>
               </motion.div>
 
+              {/* Disclaimer Section */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -130,6 +211,7 @@ export default function EllisAssociatesDashboard() {
                 </Card>
               </motion.div>
 
+              {/* Continue Button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -138,7 +220,7 @@ export default function EllisAssociatesDashboard() {
                 <Button
                   onClick={handleContinue}
                   size="lg"
-                  className="bg-white text-blue-900 hover:bg-blue-50 text-lg px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+                  className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   Access Dashboard
                 </Button>
@@ -215,7 +297,7 @@ export default function EllisAssociatesDashboard() {
 
                       <Button
                         type="submit"
-                        className="w-full bg-blue-900 hover:bg-blue-800"
+                        className="w-full"
                         disabled={isLoading || !password || attemptCount >= MAX_ATTEMPTS}
                       >
                         {isLoading ? 'Verifying...' : 'Access Dashboard'}
@@ -245,17 +327,19 @@ export default function EllisAssociatesDashboard() {
               transition={{ duration: 0.5 }}
               className="min-h-screen"
             >
+              {/* Logout Button */}
               <div className="fixed top-4 right-4 z-50">
                 <Button
                   onClick={handleLogout}
                   variant="secondary"
-                  className="bg-white/90 hover:bg-white shadow-lg"
+                  className="shadow-lg"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
                 </Button>
               </div>
 
+              {/* PowerBI Dashboard Iframe */}
               <div className="w-full h-screen">
                 <iframe
                   src={POWERBI_URL}
@@ -299,3 +383,5 @@ export default function EllisAssociatesDashboard() {
     </div>
   )
 }
+
+// END OF FILE

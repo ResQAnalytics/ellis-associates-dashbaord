@@ -17,7 +17,8 @@ const Button = React.forwardRef<
   const variants = {
     default: 'bg-blue-900 text-white hover:bg-blue-800',
     secondary: 'bg-white text-blue-900 hover:bg-gray-100',
-    ghost: 'hover:bg-gray-100'
+    ghost: 'hover:bg-gray-100',
+    primary: 'bg-blue-600 text-white hover:bg-blue-500'
   }
   const sizes = {
     default: 'h-10 px-4 py-2 text-sm',
@@ -102,7 +103,7 @@ export default function EllisAssociatesDashboard() {
   const MAX_ATTEMPTS = 5
 
   // PowerBI Dashboard URL - Replace with your actual PowerBI public link
-  const POWERBI_URL = 'https://app.powerbi.com/view?r=eyJrIjoiNTFhZTNmZGEtOWJkZi00YzkxLWI2NTUtYTFmMmMxYzdjMDk5IiwidCI6ImI4MDM2M2IxLWE1NzAtNDAwMi05YzI4LTg2YzUxY2EwOTEzOCIsImMiOjZ9'
+  const POWERBI_URL = 'https://app.powerbi.com/view?r=YOUR_POWERBI_REPORT_ID'
 
   const handleContinue = () => {
     setCurrentView('auth')
@@ -219,8 +220,9 @@ export default function EllisAssociatesDashboard() {
               >
                 <Button
                   onClick={handleContinue}
+                  variant="primary"
                   size="lg"
-                  className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+                  className="px-8 py-6 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   Access Dashboard
                 </Button>

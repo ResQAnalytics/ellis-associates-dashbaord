@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Eye, EyeOff, LogOut } from 'lucide-react'
+import { Lock, Eye, EyeOff, LogOut, ExternalLink } from 'lucide-react'
 
 // Simple Button Component
 const Button = React.forwardRef<
@@ -102,8 +102,8 @@ export default function EllisAssociatesDashboard() {
   const CORRECT_PASSWORD = 'ellis2024'
   const MAX_ATTEMPTS = 5
 
-  // PowerBI Dashboard URL - Replace with your actual PowerBI public link
-  const POWERBI_URL = 'https://app.powerbi.com/view?r=YOUR_POWERBI_REPORT_ID'
+  // PowerBI Dashboard URL
+  const POWERBI_URL = 'https://app.powerbi.com/view?r=eyJrIjoiNTFhZTNmZGEtOWJkZi00YzkxLWI2NTUtYTFmMmMxYzdjMDk5IiwidCI6ImI4MDM2M2IxLWE1NzAtNDAwMi05YzI4LTg2YzUxY2EwOTEzOCIsImMiOjZ9'
 
   const handleContinue = () => {
     setCurrentView('auth')
@@ -139,6 +139,10 @@ export default function EllisAssociatesDashboard() {
     setPassword('')
     setError('')
     setAttemptCount(0)
+  }
+
+  const openDashboard = () => {
+    window.open(POWERBI_URL, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -421,7 +425,7 @@ export default function EllisAssociatesDashboard() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="min-h-screen"
+                className="flex flex-col items-center justify-center min-h-screen px-4"
               >
                 {/* Logout Button */}
                 <div className="fixed top-4 right-4 z-50">
@@ -435,15 +439,53 @@ export default function EllisAssociatesDashboard() {
                   </Button>
                 </div>
 
-                {/* PowerBI Dashboard Iframe */}
-                <div className="w-full h-screen">
-                  <iframe
-                    src={POWERBI_URL}
-                    className="w-full h-full border-0"
-                    title="PowerBI Dashboard"
-                    allowFullScreen
-                  />
-                </div>
+                {/* Dashboard Access Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="w-full max-w-2xl"
+                >
+                  <Card className="bg-white/95 backdrop-blur-sm shadow-2xl">
+                    <CardHeader className="text-center">
+                      <CardTitle className="text-3xl text-blue-900 mb-2">
+                        Dashboard Access Granted
+                      </CardTitle>
+                      <CardDescription className="text-base">
+                        Click the button below to open your PowerBI dashboard in a new window
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p className="text-sm text-blue-900 text-center">
+                          Due to PowerBI security settings, the dashboard will open in a separate browser window. 
+                          Please allow pop-ups if prompted.
+                        </p>
+                      </div>
+
+                      <Button
+                        onClick={openDashboard}
+                        variant="primary"
+                        size="lg"
+                        className="w-full py-6 text-lg"
+                      >
+                        <ExternalLink className="w-5 h-5 mr-2" />
+                        Open PowerBI Dashboard
+                      </Button>
+
+                      <div className="text-center">
+                        <a
+                          href={POWERBI_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:text-blue-800 underline"
+                        >
+                          Or click here to open in a new tab
+                        </a>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

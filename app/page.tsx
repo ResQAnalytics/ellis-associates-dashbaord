@@ -9,7 +9,7 @@ import { Lock, Eye, EyeOff, LogOut } from 'lucide-react'
 const Button = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: 'default' | 'secondary' | 'ghost'
+    variant?: 'default' | 'secondary' | 'ghost' | 'primary'
     size?: 'default' | 'lg'
   }
 >(({ className = '', variant = 'default', size = 'default', ...props }, ref) => {
